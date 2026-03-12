@@ -55,6 +55,19 @@ if (!checkRateLimitPreset(email, 'signup')) {
 | `errorReporting` | 20 | 1 minute |
 | `dataExport` | 10 | 1 minute |
 
+### Independent Limiters
+
+```ts
+import { createRateLimiter } from '@philiprehberger/rate-limit';
+
+const apiLimiter = createRateLimiter(100, 15 * 60 * 1000);
+const loginLimiter = createRateLimiter(5, 60 * 60 * 1000);
+
+// Each has its own state — no cross-contamination
+apiLimiter.checkRateLimit(userIp);
+loginLimiter.checkRateLimit(userIp);
+```
+
 ### Cleanup
 
 ```ts
