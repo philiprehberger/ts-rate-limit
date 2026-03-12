@@ -1,4 +1,4 @@
-# @philiprehberger/ts-rate-limit
+# @philiprehberger/rate-limit
 
 In-memory rate limiting for Node.js API routes with configurable windows and presets.
 
@@ -7,7 +7,7 @@ In-memory rate limiting for Node.js API routes with configurable windows and pre
 ## Installation
 
 ```bash
-npm install @philiprehberger/ts-rate-limit
+npm install @philiprehberger/rate-limit
 ```
 
 ## Usage
@@ -15,7 +15,7 @@ npm install @philiprehberger/ts-rate-limit
 ### Basic
 
 ```ts
-import { checkRateLimit, getRateLimitInfo } from '@philiprehberger/ts-rate-limit';
+import { checkRateLimit, getRateLimitInfo } from '@philiprehberger/rate-limit';
 
 // In your API route handler:
 const allowed = checkRateLimit(userIp, 100, 15 * 60 * 1000); // 100 req / 15 min
@@ -36,7 +36,7 @@ if (!allowed) {
 ### With Presets
 
 ```ts
-import { checkRateLimitPreset } from '@philiprehberger/ts-rate-limit';
+import { checkRateLimitPreset } from '@philiprehberger/rate-limit';
 
 // Signup: 5 requests per hour
 if (!checkRateLimitPreset(email, 'signup')) {
@@ -58,7 +58,7 @@ if (!checkRateLimitPreset(email, 'signup')) {
 ### Cleanup
 
 ```ts
-import { cleanupExpiredEntries } from '@philiprehberger/ts-rate-limit';
+import { cleanupExpiredEntries } from '@philiprehberger/rate-limit';
 
 // Run periodically to prevent memory leaks
 setInterval(() => cleanupExpiredEntries(), 60 * 1000);
