@@ -1,6 +1,6 @@
 {
   "name": "@philiprehberger/rate-limit",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "In-memory rate limiting for Node.js API routes with configurable windows and presets",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -46,8 +46,12 @@
     "url": "git+https://github.com/philiprehberger/ts-rate-limit.git"
   },
   "homepage": "https://github.com/philiprehberger/ts-rate-limit#readme",
-  "bugs": { "url": "https://github.com/philiprehberger/ts-rate-limit/issues" },
+  "bugs": {
+    "url": "https://github.com/philiprehberger/ts-rate-limit/issues"
+  },
   "author": "Philip Rehberger",
-  "engines": { "node": ">=18.0.0" },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "sideEffects": false
 }
