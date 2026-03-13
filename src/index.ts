@@ -1,3 +1,7 @@
+// Timer helpers — declared to avoid requiring Node.js or DOM type declarations
+declare function setInterval(callback: () => void, ms: number): unknown;
+declare function clearInterval(handle: unknown): void;
+
 interface RateLimitEntry {
   count: number;
   resetTime: number;
@@ -10,6 +14,22 @@ const rateLimitMap = new Map<string, RateLimitEntry>();
 
 const DEFAULT_WINDOW_MS = 15 * 60 * 1000;
 const DEFAULT_LIMIT = 100;
+const MAX_IDENTIFIER_LENGTH = 512;
+
+/**
+ * Validate that an identifier is a non-empty string of at most 512 characters.
+ * @throws {Error} if the identifier is invalid
+ */
+function validateIdentifier(identifier: string): void {
+  if (typeof identifier !== 'string' || identifier.length === 0) {
+    throw new Error('Rate limit identifier must be a non-empty string');
+  }
+  if (identifier.length > MAX_IDENTIFIER_LENGTH) {
+    throw new Error(
+      `Rate limit identifier must be at most ${MAX_IDENTIFIER_LENGTH} characters (got ${identifier.length})`
+    );
+  }
+}
 
 /**
  * Calculate the effective count using a sliding window approximation.
@@ -61,6 +81,7 @@ function checkRateLimitInternal(
   limit: number,
   windowMs: number
 ): boolean {
+  validateIdentifier(identifier);
   const now = Date.now();
   const entry = rotateIfNeeded(map, identifier, now);
 
@@ -93,6 +114,7 @@ function getRateLimitInfoInternal(
   limit: number,
   windowMs: number
 ): RateLimitInfo {
+  validateIdentifier(identifier);
   const now = Date.now();
   const entry = rotateIfNeeded(map, identifier, now);
 
@@ -122,6 +144,7 @@ function clearRateLimitInternal(
   map: Map<string, RateLimitEntry>,
   identifier: string
 ): void {
+  validateIdentifier(identifier);
   map.delete(identifier);
 }
 
@@ -204,6 +227,13 @@ export function cleanupExpiredEntries(): number {
   return cleanupExpiredEntriesInternal(rateLimitMap);
 }
 
+/**
+ * Get the number of tracked identifiers in the global rate limiter.
+ */
+export function size(): number {
+  return rateLimitMap.size;
+}
+
 /** Common rate limit presets */
 export const rateLimitPresets = {
   /** 5 requests per hour — sensitive operations (signup, password reset) */
@@ -236,6 +266,15 @@ export function checkRateLimitPreset(identifier: string, preset: RateLimitPreset
 // Factory API — create independent rate limiter instances
 // ---------------------------------------------------------------------------
 
+export interface RateLimiterOptions {
+  /** Default max requests per window (default: 100) */
+  limit?: number;
+  /** Default window in milliseconds (default: 15 minutes) */
+  windowMs?: number;
+  /** If set, starts an automatic cleanup interval (in milliseconds). The timer is unreffed so it won't keep the process alive. */
+  autoCleanupInterval?: number;
+}
+
 export interface RateLimiter {
   /** Check if a request is allowed under the rate limit. */
   checkRateLimit(identifier: string, limit?: number, windowMs?: number): boolean;
@@ -247,20 +286,46 @@ export interface RateLimiter {
   cleanupExpiredEntries(): number;
   /** Check rate limit using a preset. */
   checkRateLimitPreset(identifier: string, preset: RateLimitPreset): boolean;
+  /** Get the number of tracked identifiers. */
+  size(): number;
+  /** Stop the auto-cleanup interval (if any) and clear all entries. */
+  destroy(): void;
 }
 
 /**
  * Create an independent rate limiter with its own internal state.
  * Useful for per-route or per-service rate limiting without sharing state.
  *
- * @param defaultLimit - Default max requests per window (default: 100)
- * @param defaultWindowMs - Default window in milliseconds (default: 15 minutes)
+ * @param optionsOrLimit - Options object, or default max requests per window for backward compatibility
+ * @param defaultWindowMsArg - Default window in milliseconds (only used when first arg is a number)
  */
 export function createRateLimiter(
-  defaultLimit: number = DEFAULT_LIMIT,
-  defaultWindowMs: number = DEFAULT_WINDOW_MS
+  optionsOrLimit: number | RateLimiterOptions = DEFAULT_LIMIT,
+  defaultWindowMsArg: number = DEFAULT_WINDOW_MS
 ): RateLimiter {
+  let defaultLimit: number;
+  let defaultWindowMs: number;
+  let autoCleanupInterval: number | undefined;
+
+  if (typeof optionsOrLimit === 'object') {
+    defaultLimit = optionsOrLimit.limit ?? DEFAULT_LIMIT;
+    defaultWindowMs = optionsOrLimit.windowMs ?? DEFAULT_WINDOW_MS;
+    autoCleanupInterval = optionsOrLimit.autoCleanupInterval;
+  } else {
+    defaultLimit = optionsOrLimit;
+    defaultWindowMs = defaultWindowMsArg;
+  }
+
   const map = new Map<string, RateLimitEntry>();
+
+  let cleanupTimer: unknown = null;
+  if (autoCleanupInterval !== undefined && autoCleanupInterval > 0) {
+    cleanupTimer = setInterval(() => cleanupExpiredEntriesInternal(map), autoCleanupInterval);
+    // In Node.js, unref the timer so it doesn't keep the process alive
+    if (cleanupTimer && typeof cleanupTimer === 'object' && 'unref' in cleanupTimer) {
+      (cleanupTimer as { unref(): void }).unref();
+    }
+  }
 
   return {
     checkRateLimit(
@@ -290,6 +355,18 @@ export function createRateLimiter(
     checkRateLimitPreset(identifier: string, preset: RateLimitPreset): boolean {
       const { limit, windowMs } = rateLimitPresets[preset];
       return this.checkRateLimit(identifier, limit, windowMs);
+    },
+
+    size(): number {
+      return map.size;
+    },
+
+    destroy(): void {
+      if (cleanupTimer !== null) {
+        clearInterval(cleanupTimer);
+        cleanupTimer = null;
+      }
+      map.clear();
     },
   };
 }

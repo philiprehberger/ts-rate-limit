@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0
+
+- Add `autoCleanupInterval` option to `createRateLimiter()` for automatic expired-entry purging
+- Add `destroy()` method on `RateLimiter` to stop the cleanup timer and clear state
+- Add `size()` method to both the global API and `RateLimiter` instances
+- Add identifier validation (must be a non-empty string, max 512 characters)
+
 ## 0.2.0
 
 - Fix `getRateLimitInfo` using hardcoded 15-minute window regardless of configuration

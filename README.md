@@ -68,7 +68,22 @@ apiLimiter.checkRateLimit(userIp);
 loginLimiter.checkRateLimit(userIp);
 ```
 
-### Cleanup
+### Auto-Cleanup
+
+`createRateLimiter` accepts an options object with `autoCleanupInterval` to automatically purge expired entries on a timer. The interval is unreffed so it won't keep the Node.js process alive.
+
+```ts
+const limiter = createRateLimiter({
+  limit: 100,
+  windowMs: 15 * 60 * 1000,
+  autoCleanupInterval: 60_000, // cleanup every 60 seconds
+});
+
+// When you're done with the limiter, stop the timer and clear state:
+limiter.destroy();
+```
+
+### Manual Cleanup
 
 ```ts
 import { cleanupExpiredEntries } from '@philiprehberger/rate-limit';
@@ -76,6 +91,55 @@ import { cleanupExpiredEntries } from '@philiprehberger/rate-limit';
 // Run periodically to prevent memory leaks
 setInterval(() => cleanupExpiredEntries(), 60 * 1000);
 ```
+
+### Checking Size
+
+Use `size()` to see how many identifiers are currently tracked.
+
+```ts
+import { size } from '@philiprehberger/rate-limit';
+
+console.log(`Tracking ${size()} identifiers`);
+
+// Also available on limiter instances:
+const limiter = createRateLimiter();
+limiter.checkRateLimit('user-1');
+console.log(limiter.size()); // 1
+```
+
+### Identifier Limits
+
+Identifiers must be non-empty strings of at most 512 characters. Passing an empty string or a string exceeding the limit throws an `Error`.
+
+## API
+
+### Global Functions
+
+| Function | Description |
+|----------|-------------|
+| `checkRateLimit(id, limit?, windowMs?)` | Returns `true` if the request is allowed |
+| `getRateLimitInfo(id, limit?, windowMs?)` | Returns limit/remaining/resetTime/retryAfter |
+| `clearRateLimit(id)` | Removes the entry for an identifier |
+| `cleanupExpiredEntries()` | Purges expired entries, returns count removed |
+| `checkRateLimitPreset(id, preset)` | Check using a named preset |
+| `size()` | Number of tracked identifiers |
+
+### `createRateLimiter(options?)` / `createRateLimiter(limit?, windowMs?)`
+
+Returns a `RateLimiter` instance with the same methods as the global API, plus:
+
+| Method | Description |
+|--------|-------------|
+| `size()` | Number of tracked identifiers in this instance |
+| `destroy()` | Stops the auto-cleanup interval (if any) and clears all entries |
+
+#### Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `limit` | `number` | `100` | Max requests per window |
+| `windowMs` | `number` | `900000` (15 min) | Window duration in ms |
+| `autoCleanupInterval` | `number` | — | If set, starts an automatic cleanup interval (ms) |
 
 ## License
 
