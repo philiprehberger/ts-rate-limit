@@ -1,6 +1,6 @@
 # @philiprehberger/rate-limit
 
-[![CI](https://github.com/philiprehberger/rate-limit/actions/workflows/ci.yml/badge.svg)](https://github.com/philiprehberger/rate-limit/actions/workflows/ci.yml)
+[![CI](https://github.com/philiprehberger/rate-limit/actions/workflows/publish.yml/badge.svg)](https://github.com/philiprehberger/rate-limit/actions/workflows/publish.yml)
 [![npm version](https://img.shields.io/npm/v/@philiprehberger/rate-limit.svg)](https://www.npmjs.com/package/@philiprehberger/rate-limit)
 [![License](https://img.shields.io/github/license/philiprehberger/rate-limit)](LICENSE)
 
@@ -144,6 +144,15 @@ Returns a `RateLimiter` instance with the same methods as the global API, plus:
 | `limit` | `number` | `100` | Max requests per window |
 | `windowMs` | `number` | `900000` (15 min) | Window duration in ms |
 | `autoCleanupInterval` | `number` | — | If set, starts an automatic cleanup interval (ms) |
+
+
+## Development
+
+```bash
+npm install
+npm run build
+npm test
+```
 
 ## License
 

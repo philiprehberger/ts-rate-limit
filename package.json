@@ -1,6 +1,6 @@
 {
   "name": "@philiprehberger/rate-limit",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "In-memory rate limiting for Node.js API routes with configurable windows and presets",
   "type": "module",
   "main": "./dist/index.cjs",
