@@ -26,7 +26,7 @@
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm run build",
-    "test": "node --test src/__tests__/index.test.mjs"
+    "test": "node --test"
   },
   "devDependencies": {
     "tsup": "^8.0.0",
