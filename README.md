@@ -1,12 +1,12 @@
 # @philiprehberger/rate-limit
 
-[![CI](https://github.com/philiprehberger/rate-limit/actions/workflows/publish.yml/badge.svg)](https://github.com/philiprehberger/rate-limit/actions/workflows/publish.yml)
+[![CI](https://github.com/philiprehberger/rate-limit/actions/workflows/ci.yml/badge.svg)](https://github.com/philiprehberger/rate-limit/actions/workflows/ci.yml)
 [![npm version](https://img.shields.io/npm/v/@philiprehberger/rate-limit.svg)](https://www.npmjs.com/package/@philiprehberger/rate-limit)
 [![License](https://img.shields.io/github/license/philiprehberger/rate-limit)](LICENSE)
 
 In-memory rate limiting for Node.js API routes with configurable windows and presets
 
-> **Note:** This is a single-instance rate limiter using an in-memory Map. For distributed systems with multiple server instances, use a Redis-based solution.
+> **Note:** This is a single-instance rate limiter using an in-memory Map. For distributed systems with multiple server instances, use a Redis-based solution
 
 ## Installation
 
