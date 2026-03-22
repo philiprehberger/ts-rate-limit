@@ -1,8 +1,8 @@
 # @philiprehberger/rate-limit
 
-[![CI](https://github.com/philiprehberger/rate-limit/actions/workflows/ci.yml/badge.svg)](https://github.com/philiprehberger/rate-limit/actions/workflows/ci.yml)
+[![CI](https://github.com/philiprehberger/ts-rate-limit/actions/workflows/ci.yml/badge.svg)](https://github.com/philiprehberger/ts-rate-limit/actions/workflows/ci.yml)
 [![npm version](https://img.shields.io/npm/v/@philiprehberger/rate-limit.svg)](https://www.npmjs.com/package/@philiprehberger/rate-limit)
-[![License](https://img.shields.io/github/license/philiprehberger/rate-limit)](LICENSE)
+[![License](https://img.shields.io/github/license/philiprehberger/ts-rate-limit)](LICENSE)
 
 In-memory rate limiting for Node.js API routes with configurable windows and presets
 
