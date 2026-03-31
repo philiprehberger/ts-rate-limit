@@ -1,9 +1,8 @@
 # @philiprehberger/rate-limit
 
-[![CI](https://github.com/philiprehberger/ts-rate-limit/actions/workflows/ci.yml/badge.svg)](https://github.com/philiprehberger/ts-rate-limit/actions/workflows/ci.yml)
+[![CI](https://github.com/philiprehberger/rate-limit/actions/workflows/ci.yml/badge.svg)](https://github.com/philiprehberger/rate-limit/actions/workflows/ci.yml)
 [![npm version](https://img.shields.io/npm/v/@philiprehberger/rate-limit.svg)](https://www.npmjs.com/package/@philiprehberger/rate-limit)
-[![License](https://img.shields.io/github/license/philiprehberger/ts-rate-limit)](LICENSE)
-[![Sponsor](https://img.shields.io/badge/sponsor-GitHub%20Sponsors-ec6cb9)](https://github.com/sponsors/philiprehberger)
+[![Last updated](https://img.shields.io/github/last-commit/philiprehberger/rate-limit)](https://github.com/philiprehberger/rate-limit/commits/main)
 
 In-memory rate limiting for Node.js API routes with configurable windows and presets
 
@@ -146,7 +145,6 @@ Returns a `RateLimiter` instance with the same methods as the global API, plus:
 | `windowMs` | `number` | `900000` (15 min) | Window duration in ms |
 | `autoCleanupInterval` | `number` | — | If set, starts an automatic cleanup interval (ms) |
 
-
 ## Development
 
 ```bash
@@ -155,6 +153,24 @@ npm run build
 npm test
 ```
 
+## Support
+
+If you find this project useful:
+
+⭐ [Star the repo](https://github.com/philiprehberger/rate-limit)
+
+🐛 [Report issues](https://github.com/philiprehberger/rate-limit/issues?q=is%3Aissue+is%3Aopen+label%3Abug)
+
+💡 [Suggest features](https://github.com/philiprehberger/rate-limit/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement)
+
+❤️ [Sponsor development](https://github.com/sponsors/philiprehberger)
+
+🌐 [All Open Source Projects](https://philiprehberger.com/open-source-packages)
+
+💻 [GitHub Profile](https://github.com/philiprehberger)
+
+🔗 [LinkedIn Profile](https://www.linkedin.com/in/philiprehberger)
+
 ## License
 
-MIT
+[MIT](LICENSE)
