@@ -1,8 +1,8 @@
 # @philiprehberger/rate-limit
 
-[![CI](https://github.com/philiprehberger/rate-limit/actions/workflows/ci.yml/badge.svg)](https://github.com/philiprehberger/rate-limit/actions/workflows/ci.yml)
+[![CI](https://github.com/philiprehberger/ts-rate-limit/actions/workflows/ci.yml/badge.svg)](https://github.com/philiprehberger/ts-rate-limit/actions/workflows/ci.yml)
 [![npm version](https://img.shields.io/npm/v/@philiprehberger/rate-limit.svg)](https://www.npmjs.com/package/@philiprehberger/rate-limit)
-[![Last updated](https://img.shields.io/github/last-commit/philiprehberger/rate-limit)](https://github.com/philiprehberger/rate-limit/commits/main)
+[![Last updated](https://img.shields.io/github/last-commit/philiprehberger/ts-rate-limit)](https://github.com/philiprehberger/ts-rate-limit/commits/main)
 
 In-memory rate limiting for Node.js API routes with configurable windows and presets
 
@@ -157,11 +157,11 @@ npm test
 
 If you find this project useful:
 
-⭐ [Star the repo](https://github.com/philiprehberger/rate-limit)
+⭐ [Star the repo](https://github.com/philiprehberger/ts-rate-limit)
 
-🐛 [Report issues](https://github.com/philiprehberger/rate-limit/issues?q=is%3Aissue+is%3Aopen+label%3Abug)
+🐛 [Report issues](https://github.com/philiprehberger/ts-rate-limit/issues?q=is%3Aissue+is%3Aopen+label%3Abug)
 
-💡 [Suggest features](https://github.com/philiprehberger/rate-limit/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement)
+💡 [Suggest features](https://github.com/philiprehberger/ts-rate-limit/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement)
 
 ❤️ [Sponsor development](https://github.com/sponsors/philiprehberger)
 
